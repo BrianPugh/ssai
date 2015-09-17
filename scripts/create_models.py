@@ -19,7 +19,7 @@ crop_size = args.crop_size
 batch_size = args.batch_size
 
 home_dir = subprocess.check_output('echo $HOME', shell=True).strip()
-
+caffe_dir = subprocess.check_output('echo $CAFFE_ROOT',shell=True).strip()
 
 def patch_data_layer(number, bottom, object_type):
     return '''layer {{
@@ -607,6 +607,6 @@ if __name__ == '__main__':
         fp.close()
 
         subprocess.check_output(
-            ['python', '%s/Libraries/caffe/python/draw_net.py' % home_dir,
+            ['python', '%s/python/draw_net.py' % caffe_dir,
              'models/%s/train_test.prototxt' % model_name,
              'models/%s/net.png' % model_name])
