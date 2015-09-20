@@ -81,6 +81,7 @@ if __name__ == '__main__':
     parser.add_argument('--channel', '-c', type=int, default=3)
     parser.add_argument('--device_id', '-i', type=int, default=0)
     parser.add_argument('--offset', '-o', type=int, default=0)
+    parser.add_argument('--out_dir', '-s',type=str, default=None)
     args = parser.parse_args()
     print args
 
@@ -89,9 +90,15 @@ if __name__ == '__main__':
 
     model_fn = args.model
     weight_fn = args.weight
-    n_iter = int(weight_fn.split('_')[-1].split('.')[0])
-    result_dir = args.model.replace(basename(args.model), '')
-    result_dir += 'prediction_%d' % n_iter
+    
+    # Default location of results directory:
+    # model_location/prediction_itr
+    if args.out_dir is None:
+        n_iter = int(weight_fn.split('_')[-1].split('.')[0])
+        result_dir = args.model.replace(basename(args.model), '')
+        result_dir += 'prediction_%d' % n_iter
+    else:
+        result_dir = args.out_dir
     print result_dir
     if not os.path.exists(result_dir):
         os.mkdir(result_dir)
